@@ -69,11 +69,7 @@ final class MetadataLoader
         }
     }
 
-    /**
-     * @param ReflectionClass $class
-     *
-     * @return ReflectionClass[]
-     */
+
     private function getClassHierarchy(ReflectionClass $class): Generator
     {
         /** @var ReflectionClass[] $classes */
@@ -85,7 +81,9 @@ final class MetadataLoader
             $class = $class->getParentClass();
         } while ($class);
 
-        foreach (array_reverse($classes, false) as $class) {
+        $classes = array_reverse($classes, false);
+
+        foreach ($classes as $class) {
             foreach ($class->getInterfaces() as $interface) {
                 if (isset($interfaces[$interface->getName()])) {
                     continue;
