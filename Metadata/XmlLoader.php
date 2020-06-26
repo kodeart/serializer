@@ -39,7 +39,7 @@ final class XmlLoader extends Serializer\XmlSerializer implements ConfigurationL
 
     public function loadConfiguration(): void
     {
-        if ($this->config) {
+        if (false === empty($this->config)) {
             return;
         }
 
