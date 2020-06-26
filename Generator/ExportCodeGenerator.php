@@ -27,7 +27,7 @@ final class ExportCodeGenerator
             return;
         }
 
-        if (!$metadata->property) {
+        if (empty($metadata->property)) {
             $method->addBody('return [];');
             return;
         }
