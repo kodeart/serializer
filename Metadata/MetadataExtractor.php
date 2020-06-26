@@ -230,21 +230,21 @@ final class MetadataExtractor
             unset($types[array_search('null', $types)]);
         }
 
-        if (1 === count($types)) {
-            $type = $types[0];
-
-            if (($pos = strrpos($type, '[]')) && $c = $this->findFQCN(substr($type, 0, $pos),
-                    $property->getDeclaringClass())) {
-                $parent->type = $c . '[]';
-            } else {
-                $parent->type = $this->getReturnType($property, $type);
-            }
-            return true;
+        if (1 !== count($types)) {
+            // skip if multiple types are set; type may be any of those
+            $parent->type = 'mixed';
+            return false;
         }
 
-        // skip if multiple types are set; type may be any of those
-        $parent->type = 'mixed';
-        return false;
+        $type = $types[0];
+
+        if (($pos = strrpos($type, '[]')) && $c = $this->findFQCN(substr($type, 0, $pos), $property->getDeclaringClass())) {
+            $parent->type = $c . '[]';
+        } else {
+            $parent->type = $this->getReturnType($property, $type);
+        }
+
+        return true;
     }
 
 
