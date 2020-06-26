@@ -26,7 +26,7 @@
     "psr/cache": "~1",
     "nette/php-generator": "~3",
     "ext-json": "*"
-  }
+  },
   "autoload": {
     "psr-4": {
       "Koded\\Serializer\\": ""
