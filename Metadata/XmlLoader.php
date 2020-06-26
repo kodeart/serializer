@@ -61,21 +61,27 @@ final class XmlLoader extends Serializer\XmlSerializer implements ConfigurationL
     }
 
 
-    private function extractProperties(ClassMetadata $metadata, array $class): void
+    private function extractProperties(ClassMetadata $metadata, array $classDefinitions): void
     {
-        if (!$className = $class['@name'] ?? '') {
-            throw SerializationError::forInvalidConfigurationParameter($metadata->name, 'class @name');
+        if (!$className = $classDefinitions['@name'] ?? '') {
+            throw SerializationError::forInvalidConfigurationParameter($metadata->name, 'class@name');
         }
 
         if ($className !== $metadata->name) {
             return;
         }
 
-        if (!isset($class['property'][0])) {
-            $class['property'] = [$class['property']];
+        if (!isset($classDefinitions['property'][0])) {
+            $classDefinitions['property'] = [$classDefinitions['property']];
         }
 
-        foreach ($class['property'] ?? [] as $property) {
+        $this->overwriteProperties($metadata, $classDefinitions, $className);
+    }
+
+
+    private function overwriteProperties(ClassMetadata $metadata, array $classDefinitions, string $className): void
+    {
+        foreach ($classDefinitions as $property) {
             if (!$name = $property['@name'] ?? '') {
                 throw SerializationError::forInvalidConfigurationParameter($className, 'property@name');
             }
