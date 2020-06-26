@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:documentation>
+      <![CDATA[ XML schema for the configuration file used by Koded Serializer's object binding. ]]>
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="serializer" type="serializerType"/>
+  <xs:complexType name="propertyType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="phpType" name="type"/>
+        <xs:attribute type="xs:string" name="alias"/>
+        <xs:attribute type="xs:boolean" name="nullable" default="false"/>
+        <xs:attribute type="xs:boolean" name="hidden" default="false"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="classType">
+    <xs:sequence>
+      <xs:element type="propertyType" name="property" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="normalizerType" mixed="true">
+    <xs:sequence>
+      <xs:element type="argumentType" name="argument" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="class" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="argumentType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="runtimeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="production"/>
+      <xs:enumeration value="dev"/>
+      <xs:enumeration value="debug"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="phpType">
+    <xs:annotation>
+      <xs:documentation>
+        A PHP type for the class property.<br/><br/>
+        For <b>scalar</b> and <b>array</b> types, the value is ignored.<br/><br/>
+
+        In case of a <b>collection of classes</b>, use the FQCN for the value:<br/>
+        <i>&lt;property type="array"&gt;Fully\Qualified\Class\Name&lt;/property&gt;</i><br/>
+        or, <i>int, string, float</i>, etc.<br/><br/>
+
+        For <b>mixed</b> array, ignore the value:<br/>
+        <i>&lt;property type="mixed"/&gt;</i>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="float"/>
+      <xs:enumeration value="bool"/>
+      <xs:enumeration value="array"/>
+      <xs:enumeration value="mixed"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="serializerType">
+    <xs:sequence>
+      <xs:element type="classType" name="class" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="normalizerType" name="normalizer" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:boolean" name="normalizers" default="true"/>
+    <xs:attribute type="runtimeType" name="runtime" default="production"/>
+    <xs:attribute type="xs:anyURI" name="namespace" default="App"/>
+    <xs:attribute type="xs:anyURI" name="directory"/>
+  </xs:complexType>
+</xs:schema>

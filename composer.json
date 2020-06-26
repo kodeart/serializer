@@ -1,0 +1,52 @@
+{
+  "name": "koded/serializer",
+  "type": "library",
+  "license": "BSD-3-Clause",
+  "description": "A library for de/serialization of PHP objects",
+  "keywords": [
+    "serializer",
+    "serialization",
+    "json-serialization",
+    "data-serialization",
+    "data-transformation",
+    "utility"
+  ],
+  "authors": [
+    {
+      "name": "Mihail Binev",
+      "homepage": "https://kodeart.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^7.3",
+    "koded/stdlib": "v5.x-dev",
+    "psr/simple-cache": "~1",
+    "psr/cache": "~1",
+    "nette/php-generator": "~3",
+    "ext-json": "*"
+  },
+  "suggest": {
+    "msgpack": "msgpack module for de/serialization",
+    "igbinary": "igbinary module for de/serialization"
+  },
+  "autoload": {
+    "psr-4": {
+      "Koded\\Serializer\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "require-dev": {
+    "koded/cache-simple": "v3.x-dev",
+    "phpunit/phpunit": ">=6.0.0 <8",
+    "phpbench/phpbench": "@dev"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Koded\\Serializer\\": "Tests/"
+    }
+  }
+}
