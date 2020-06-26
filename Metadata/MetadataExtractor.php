@@ -131,10 +131,12 @@ final class MetadataExtractor
                 $property->type = $type->getName();
                 return true;
             }
+
             return $this->extractFromDocComment($property, $parameter);
 
         } catch (Throwable $e) {
             $property->type = '';
+            return false;
         }
     }
 
@@ -173,7 +175,6 @@ final class MetadataExtractor
     {
         $class = $property->ref->getDeclaringClass();
 
-        /** @var ReflectionProperty $p */
         if (!$p = array_filter($class->getProperties(), function(ReflectionProperty $p) use ($property) {
             return $p->name === $property->name;
         })) {
@@ -196,8 +197,8 @@ final class MetadataExtractor
     }
 
     /**
-     * @param PropertyMetadata $parent   Declaring property metadata class
-     * @param Reflector        $property Reflection method or parameter
+     * @param PropertyMetadata                    $parent   Declaring property metadata class
+     * @param ReflectionMethod | ReflectionParameter $property Reflection method or parameter
      *
      * @return bool
      */
@@ -232,8 +233,8 @@ final class MetadataExtractor
         if (1 === count($types)) {
             $type = $types[0];
 
-            if (($pos = strrpos($type, '[]'))
-                && $c = $this->findFQCN(substr($type, 0, $pos), $property->getDeclaringClass())) {
+            if (($pos = strrpos($type, '[]')) && $c = $this->findFQCN(substr($type, 0, $pos),
+                    $property->getDeclaringClass())) {
                 $parent->type = $c . '[]';
             } else {
                 $parent->type = $this->getReturnType($property, $type);
