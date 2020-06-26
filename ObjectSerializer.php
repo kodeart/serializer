@@ -19,7 +19,7 @@ use Throwable;
 
 final class ObjectSerializer implements Serializer
 {
-    /** @var Serializer */
+    /** @var \Koded\Stdlib\Serializer */
     private $encoder;
 
     /** @var Normalizer[] | Denormalizer[] */
@@ -72,7 +72,7 @@ final class ObjectSerializer implements Serializer
     public function normalize($value)
     {
         $type = is_object($value) ? get_class($value) : gettype($value);
-        if (!$normalizer = $this->findNormalizer($value, $type)) {
+        if (null === $normalizer = $this->findNormalizer($value, $type)) {
             throw SerializationError::forUnknownNormalizerType($type);
         }
         return $normalizer->normalize($this, $value);
@@ -80,7 +80,7 @@ final class ObjectSerializer implements Serializer
 
     public function denormalize($normalized, string $type, object $target = null)
     {
-        if (!$normalizer = $this->findDenormalizer($type)) {
+        if (null === $normalizer = $this->findDenormalizer($type)) {
             $t = is_object($target) ? get_class($target) : gettype($target);
             throw SerializationError::forUnknownDenormalizerType($type, $t);
         }
