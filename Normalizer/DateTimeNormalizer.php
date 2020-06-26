@@ -58,7 +58,7 @@ final class DateTimeNormalizer implements Normalizer, Denormalizer
         object $target = null
     ): \DateTimeInterface {
         try {
-            return date_create_immutable($normalized) ?: null;
+            return date_create_immutable($normalized);// ?: null;
         } catch (\Throwable $e) {
             error_log(sprintf("[DateTime Error] for value %s\nand type '%s'\nwith errors:\n%s",
                     var_export($normalized, true), $type, join(PHP_EOL, \DateTime::getLastErrors()['errors'])));
