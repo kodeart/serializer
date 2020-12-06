@@ -20,8 +20,8 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^7.3|^8",
-    "koded/stdlib": "5.*",
+    "php": "^7.3",
+    "koded/stdlib": "~4",
     "psr/simple-cache": "~1",
     "psr/cache": "~1",
     "nette/php-generator": "~3",
